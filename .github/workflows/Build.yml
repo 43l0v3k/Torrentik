@@ -19,3 +19,16 @@ jobs:
       - name: Publish
         run: >
           dotnet publish Torrentik.csproj -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true -o out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Torrentik
+          path: out/Torrentik.exe
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Torrentik (последняя сборка)
+          prerelease: true
+          files: out/Torrentik.exe
